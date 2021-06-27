@@ -1,0 +1,2 @@
+pip freeze > requirements.txt
+echo "$(echo '-f https://download.pytorch.org/whl/torch_stable.html' | cat - requirements.txt)" > requirements.txt
