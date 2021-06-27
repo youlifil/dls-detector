@@ -1,7 +1,6 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: win-64
-_pytorch_select=0.1=cpu_0
 absl-py=0.13.0=pypi_0
 blas=1.0=mkl
 brotlipy=0.7.0=py37h2bbff1b_1003
