@@ -14,6 +14,7 @@ future==0.18.2
 google-auth==1.32.0
 google-auth-oauthlib==0.4.4
 grpcio==1.38.1
+gunicorn==20.1.0
 idna @ file:///home/linux1/recipes/ci/idna_1610986105248/work
 importlib-metadata @ file:///C:/ci/importlib-metadata_1617877486026/work
 itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
