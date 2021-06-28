@@ -1,8 +1,118 @@
 <html>
     <head>
-        <title>Детектор</title>
+        <title>Детектор всего на свете</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+        <link rel="stylesheet" href="static/index.css">
+        <script src="static/spin.js"></script>
+        <link rel="stylesheet" href="static/spin.css">
+        <script>
+          Dropzone.autoDiscover = false;
+          var engine = false;
+          {% if engine %}
+            engine = true;
+          {% endif %}
+        </script>
     </head>
     <body>
-        <img src="{{ image }}">
+        <div class="dropper" id="dropper">
+          <div id="dz-preview" class="dropzone-previews"></div>
+          <div>Перетащите сюда файл, или кликните, чтобы загрузить.</div>
+          <div class="error"></div>
+        </div>
+        <div class="result">
+          <h2 class="result-header">Полюбуйтесь, что тут нашлось</h2>
+          <div class="result-image-wrapper">
+            <img class="result-image">
+          </div>
+        </div>
+        <div class="modal">
+          <div class="modal-window">
+            <div class="modal-text">I am some modal window</div>
+            <div class="spinner"></div>
+          </div>
+        </div>
     </body>
+    <script>
+      (function() {
+        var opts = {
+          lines: 13, // The number of lines to draw
+          length: 38, // The length of each line
+          width: 17, // The line thickness
+          radius: 45, // The radius of the inner circle
+          scale: 1, // Scales overall size of the spinner
+          corners: 1, // Corner roundness (0..1)
+          speed: 1, // Rounds per second
+          rotate: 0, // The rotation offset
+          animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+          direction: 1, // 1: clockwise, -1: counterclockwise
+          color: 'darkorange', // CSS color or array of colors
+          fadeColor: 'transparent', // CSS color or array of colors
+          top: '50%', // Top position relative to parent
+          left: '50%', // Left position relative to parent
+          shadow: '0 0 1px transparent', // Box-shadow for the lines
+          zIndex: 2000000000, // The z-index (defaults to 2e9)
+          className: 'spinner', // The CSS class to assign to the spinner
+          position: 'absolute', // Element positioning
+        };
+
+        var spin_div = document.querySelector('.spinner');
+        var spinner = null;
+
+        var modal = document.querySelector(".modal");
+        var modal_text = document.querySelector(".modal-text");
+
+        var error = document.querySelector(".error");
+
+        function modal_show(text) {
+          modal_text.innerHTML = text;
+          modal.style.display = "block";
+          spinner = new Spin.Spinner(opts).spin(spin_div);
+        }
+
+        function modal_hide() {
+          spinner.stop();
+          modal.style.display = "none";
+        }
+
+        var dropper = new Dropzone("#dropper", { 
+          url: "/",
+          createImageThumbnails: false,
+          acceptedFiles: "image/*",
+          previewsContainer: "#dz-preview"
+        })
+
+        dropper.on("addedfile", function(){
+          modal_show("Не шуметь!" + "<br/>" + "Идёт детекция...");
+        })
+
+        dropper.on("error", function(e, msg) {
+          modal_hide();
+          error.innerHTML = msg;
+        });
+
+        dropper.on("success", function(file, response) {
+          modal_hide();
+          error.innerHTML = "";
+          var img = document.querySelector(".result-image")
+          var timestamp = new Date().getTime();
+          var queryString = "?t=" + timestamp;  
+          img.src = response.imageUrl + queryString;
+          var result = document.querySelector(".result")
+          result.style.visibility = 'visible';
+        });
+
+        if (!engine) {
+          modal_show("Подождите, я готовлюсь к работе..." + "<br/>" + "Ваш YOLOv5");
+          fetch('/init', { method: 'POST' })
+            .then(function(response) {
+              return response.json().status;
+            })
+            .then(function(status) {
+              modal_hide();
+            });
+        }
+    })();
+    </script>
 </html>
