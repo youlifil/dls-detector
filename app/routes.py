@@ -15,9 +15,11 @@ def index():
 def init():
     global detector, imager
     if not detector:
-        detector = Detector()
-    if not imager:
-        imager = Imager()
+        try:
+            detector = Detector()
+        except:
+            pass
+    imager = Imager()
     return jsonify(status = "ok")
 
 @app.route('/', methods=['POST'])
