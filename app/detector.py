@@ -25,3 +25,4 @@ class Detector:
         results.save(self._save_path())
         self._last_result = os.path.join(current_app.config["RESULT_PATH"], 'image0.jpg')
         return results.pred
+

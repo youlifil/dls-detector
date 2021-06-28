@@ -31,3 +31,4 @@ class Imager:
         path = self._upload_path(file.filename)
         file.save(path)
         return path
+

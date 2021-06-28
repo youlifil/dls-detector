@@ -3,6 +3,7 @@ from .detector import *
 from .imager import *
 
 app = Flask(__name__)
+app.secret_key = b'123@#!sdfgsp4#$#$'
 
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.bmp']

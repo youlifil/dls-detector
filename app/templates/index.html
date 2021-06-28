@@ -103,16 +103,16 @@
           result.style.visibility = 'visible';
         });
 
-        if (!engine) {
-          modal_show("Подождите, я готовлюсь к работе..." + "<br/>" + "Ваш YOLOv5");
-          fetch('/init', { method: 'POST' })
-            .then(function(response) {
-              return response.json().status;
-            })
-            .then(function(status) {
-              modal_hide();
-            });
-        }
+        // if (!engine) {
+        //   modal_show("Подождите, я готовлюсь к работе..." + "<br/>" + "Ваш YOLOv5");
+        //   fetch('/init', { method: 'POST' })
+        //     .then(function(response) {
+        //       return response.json().status;
+        //     })
+        //     .then(function(status) {
+        //       modal_hide();
+        //     });
+        // }
     })();
     </script>
 </html>
